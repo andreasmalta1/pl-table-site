@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
+import { CalendarDays } from "lucide-react"
 import DataTable from "../components/DataTable"
-import { Loader2, CalendarDays } from "lucide-react"
+import Loader from "../components/Loader"
 
 const SeasonTable = () => {
   const [seasons, setSeasons] = useState([])
@@ -42,6 +43,7 @@ const SeasonTable = () => {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
+      <title>PL Tables | Season</title>
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black italic uppercase tracking-tighter">
@@ -69,14 +71,8 @@ const SeasonTable = () => {
         </div>
       </header>
 
-      {/* Main Table Display */}
       {loading ? (
-        <div className="h-64 flex flex-col items-center justify-center bg-slate-900/20 rounded-3xl border border-slate-800/50">
-          <Loader2 className="animate-spin text-indigo-500 mb-4" size={32} />
-          <span className="text-slate-500 font-mono text-xs uppercase tracking-widest">
-            Compiling Standings...
-          </span>
-        </div>
+        <Loader />
       ) : (
         <DataTable
           data={tableData}
