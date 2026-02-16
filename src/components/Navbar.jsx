@@ -10,20 +10,35 @@ const Navbar = () => (
         <Link to="/" className="hover:text-white">
           Home
         </Link>
+        <Link to="/about" className="hover:text-white">
+          About
+        </Link>
         <Link to="/all-time" className="hover:text-white">
           All-Time
+        </Link>
+        <Link to="/custom-range" className="hover:text-white">
+          Custom Dates
         </Link>
         <Link to="/seasons" className="hover:text-white">
           Seasons
         </Link>
+        <Link to="/calendar" className="hover:text-white">
+          Calendar year
+        </Link>
         <Link to="/managers" className="hover:text-white">
           Managers
+        </Link>
+        <Link to="/past-managers" className="hover:text-white">
+          Past Managers
         </Link>
         <Link to="/youtube" className="hover:text-white text-indigo-400">
           YouTube
         </Link>
         <Link to="/stats" className="hover:text-white text-indigo-400">
           Stats
+        </Link>
+        <Link to="/contact" className="hover:text-white text-indigo-400">
+          Contact
         </Link>
       </div>
     </div>

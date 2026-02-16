@@ -6,6 +6,7 @@ import About from "./pages/About"
 import AllTimeTable from "./pages/AllTimeTable"
 import CustomDateTable from "./pages/CustomDateTable"
 import SeasonTable from "./pages/SeasonTable"
+import CalendarTable from "./pages/CalendarTable"
 import ManagerList from "./pages/ManagerList"
 import PLDashboard from "./pages/PLDashboard"
 import SiteAnalytics from "./pages/SiteAnalytics"
@@ -42,13 +43,14 @@ function App() {
             <Route path="/all-time" element={<AllTimeTable />} />
             <Route path="/custom-range" element={<CustomDateTable />} />
             <Route path="/seasons" element={<SeasonTable />} />
+            <Route path="/calendar" element={<CalendarTable />} />
             <Route path="/managers" element={<ManagerList type="current" />} />
-            <Route path="/stats" element={<SiteAnalytics />} />
             <Route
               path="/past-managers"
               element={<ManagerList type="past" />}
             />
             <Route path="/youtube" element={<PLDashboard />} />
+            <Route path="/stats" element={<SiteAnalytics />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
