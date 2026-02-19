@@ -9,21 +9,18 @@ const SeasonTable = () => {
   const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // Phase 1: Fetch the list of seasons on mount
   useEffect(() => {
     fetch("http://127.0.0.1:5000/api/seasons-list")
       .then((res) => res.json())
       .then((data) => {
-        // Expected data format: ["2025-26", "2024-25", "2023-24"]
         setSeasons(data)
         if (data.length > 0) {
-          setSelectedSeason(data[0]) // Auto-select the first season
+          setSelectedSeason(data[0])
         }
       })
       .catch((err) => console.error("Error fetching seasons:", err))
   }, [])
 
-  // Phase 2: Fetch table data whenever the selectedSeason changes
   useEffect(() => {
     if (!selectedSeason) return
     const formattedSeason = selectedSeason.replace("/", "-")
