@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+/* Ensure our branding only shows in the saved PNG */
+.block-on-export {
+  display: none;
+}
+
+/* These styles are applied only by the html-to-image library during capture */
+.html-to-image-node .block-on-export {
+  display: block !important;
+}
+
+/* Hide the scrollbars in the exported image if the table is wide */
+.html-to-image-node ::-webkit-scrollbar {
+  display: none;
+}
