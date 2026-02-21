@@ -29,9 +29,9 @@ out/
 
 # Environment variables
 .env
-.env.development.local
+.env.development
 .env.test.local
-.env.production.local
+.env.production
 .env.local
 
 # TypeScript

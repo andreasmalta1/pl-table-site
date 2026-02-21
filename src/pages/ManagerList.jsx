@@ -4,6 +4,7 @@ import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
 import InfoBit from "../components/InfoBit"
 import ErrorScreen from "../components/ErrorScreen"
+import { apiRequest } from "../utils/api"
 
 const ManagerList = ({ type }) => {
   const [managers, setManagers] = useState([])
@@ -20,13 +21,7 @@ const ManagerList = ({ type }) => {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch(
-        `http://127.0.0.1:5000/api/manager-list/${type}`,
-      )
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`)
-      }
-      const data = await response.json()
+      const data = await apiRequest(`/manager-list/${type}`)
       const processedData = data
         .map((m) => {
           const start = new Date(m.date_start)
@@ -50,13 +45,7 @@ const ManagerList = ({ type }) => {
     setSelectedManager(manager)
 
     try {
-      const response = await fetch(
-        `http://127.0.0.1:5000/api/stints/${manager.id}`,
-      )
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`)
-      }
-      const data = await response.json()
+      const data = await apiRequest(`/stints/${manager.id}`)
       setTableData(data)
     } catch (err) {
       setError(err.message)

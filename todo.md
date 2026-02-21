@@ -1,6 +1,5 @@
 point deductions
 Clean api calls (axios)
-Remove domain repeatedness
 Logo in table always should be coloured
 Better nav bar
 Admin page with login to see stats + edit data

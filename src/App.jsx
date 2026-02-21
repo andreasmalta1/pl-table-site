@@ -1,5 +1,10 @@
-// src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { useEffect } from "react"
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Home from "./pages/Home"
 import About from "./pages/About"
@@ -11,23 +16,27 @@ import ManagerList from "./pages/ManagerList"
 import YouTubeStats from "./pages/YouTubeStats"
 import SiteAnalytics from "./pages/SiteAnalytics"
 import Contact from "./pages/Contact"
-
-import { useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import { apiRequest } from "./utils/api"
 
 const VisitorTracker = () => {
   const location = useLocation()
 
   useEffect(() => {
-    // Send visit data to your Flask backend
-    fetch("http://127.0.0.1:5000/api/track-visit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ path: location.pathname }),
-    }).catch((err) => console.error("Tracking failed", err))
-  }, [location]) // Fires every time the route changes
+    const trackVisit = async () => {
+      try {
+        await apiRequest("/track-visit", {
+          method: "POST",
+          body: JSON.stringify({ path: location.pathname }),
+        })
+      } catch (err) {
+        console.warn("Analytics ping failed.")
+      }
+    }
 
-  return null // This is a "headless" component
+    trackVisit()
+  }, [location.pathname]) // Only refires when the path changes
+
+  return null
 }
 
 function App() {

@@ -3,6 +3,7 @@ import { CalendarDays } from "lucide-react"
 import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
 import ErrorScreen from "../components/ErrorScreen"
+import { apiRequest } from "../utils/api"
 
 const START_YEAR = 1992
 
@@ -23,13 +24,7 @@ const CalendarTable = () => {
     if (!selectedYear) setError("Please make sure to select a year")
 
     try {
-      const response = await fetch(
-        `http://127.0.0.1:5000/api/years/${selectedYear}`,
-      )
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`)
-      }
-      const data = await response.json()
+      const data = await apiRequest(`/years/${selectedYear}`)
       setTableData(data)
     } catch (err) {
       setError(err.message)

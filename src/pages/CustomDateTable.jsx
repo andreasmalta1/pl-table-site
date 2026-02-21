@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
 import ErrorScreen from "../components/ErrorScreen"
+import { apiRequest } from "../utils/api"
 
 const CustomeDateTable = () => {
   const getInitialDates = () => {
@@ -22,13 +23,9 @@ const CustomeDateTable = () => {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch(
-        `http://127.0.0.1:5000/api/dates?start=${dates.start}&end=${dates.end}`,
+      const data = await apiRequest(
+        `/dates?start=${dates.start}&end=${dates.end}`,
       )
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`)
-      }
-      const data = await response.json()
       setTableData(data)
     } catch (err) {
       setError(err.message)

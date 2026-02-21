@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
 import ErrorScreen from "../components/ErrorScreen"
+import { apiRequest } from "../utils/api"
 
 const Home = () => {
   const [tableData, setTableData] = useState([])
@@ -12,11 +13,7 @@ const Home = () => {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/current-season")
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`)
-      }
-      const data = await response.json()
+      const data = await apiRequest("/current-season")
       setTableData(data)
     } catch (err) {
       setError(err.message)

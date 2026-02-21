@@ -3,6 +3,7 @@ import { CalendarDays } from "lucide-react"
 import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
 import ErrorScreen from "../components/ErrorScreen"
+import { apiRequest } from "../utils/api"
 
 const SeasonTable = () => {
   const [seasons, setSeasons] = useState([])
@@ -18,11 +19,7 @@ const SeasonTable = () => {
     setSelectedSeason("")
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/seasons-list`)
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`)
-      }
-      const data = await response.json()
+      const data = await apiRequest("/seasons-list")
       if (data.length > 0) {
         setSeasons(data)
         setSelectedSeason(data[0])
@@ -39,13 +36,7 @@ const SeasonTable = () => {
     setError(null)
 
     try {
-      const response = await fetch(
-        `http://127.0.0.1:5000/api/seasons/${formattedSeason}`,
-      )
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`)
-      }
-      const data = await response.json()
+      const data = await apiRequest(`/seasons/${formattedSeason}`)
       setTableData(data)
     } catch (err) {
       setError(err.message)
