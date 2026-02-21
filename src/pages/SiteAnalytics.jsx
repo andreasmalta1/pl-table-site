@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -10,34 +8,43 @@ import {
   AreaChart,
   Area,
 } from "recharts"
-import { Users, MousePointer2, Activity, Globe, Loader2 } from "lucide-react"
+import { Users, MousePointer2, Activity, Globe } from "lucide-react"
 import { motion } from "framer-motion"
+import Loader from "../components/Loader"
+import ErrorScreen from "../components/ErrorScreen"
 
 const SiteAnalytics = () => {
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  const fetchStats = async () => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/visitor-stats")
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`)
+      }
+      const data = await response.json()
+      setStats(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    // Fetch stats from your Flask API
-    fetch("http://127.0.0.1:5000/api/visitor-stats")
-      .then((res) => res.json())
-      .then((data) => {
-        setStats(data)
-        setLoading(false)
-      })
-      .catch((err) => console.error("Stats fetch error:", err))
+    fetchStats()
   }, [])
 
-  if (loading)
-    return (
-      <div className="h-96 flex items-center justify-center">
-        <Loader2 className="animate-spin text-indigo-500" size={40} />
-      </div>
-    )
+  if (error) return <ErrorScreen error={error} />
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      {/* Header */}
+      <title>PL Tables | Visitor Stats</title>
       <header>
         <h1 className="text-4xl font-black italic uppercase tracking-tighter">
           Site Traffic{" "}
@@ -52,86 +59,91 @@ const SiteAnalytics = () => {
         </p>
       </header>
 
-      {/* Stats Infographic Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <AnalyticsCard
-          title="Total Page Views"
-          value={stats.total_views.toLocaleString()}
-          icon={<MousePointer2 size={20} />}
-          color="indigo"
-        />
-        <AnalyticsCard
-          title="Unique Visitors"
-          value={stats.unique_visitors.toLocaleString()}
-          icon={<Users size={20} />}
-          color="emerald"
-        />
-        <AnalyticsCard
-          title="Avg. Engagement"
-          value={(stats.total_views / stats.unique_visitors).toFixed(2)}
-          sub="Views per user"
-          icon={<Activity size={20} />}
-          color="pink"
-        />
-      </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <AnalyticsCard
+              title="Total Page Views"
+              value={stats.total_views.toLocaleString()}
+              icon={<MousePointer2 size={20} />}
+              color="indigo"
+            />
+            <AnalyticsCard
+              title="Unique Visitors"
+              value={stats.unique_visitors.toLocaleString()}
+              icon={<Users size={20} />}
+              color="emerald"
+            />
+            <AnalyticsCard
+              title="Avg. Engagement"
+              value={(stats.total_views / stats.unique_visitors).toFixed(2)}
+              sub="Views per user"
+              icon={<Activity size={20} />}
+              color="pink"
+            />
+          </div>
 
-      {/* Traffic Trend Chart */}
-      <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-[2.5rem] backdrop-blur-md">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold uppercase italic flex items-center gap-3">
-            <Globe className="text-indigo-500" size={20} />
-            Traffic Flow (Hashed IP Basis)
-          </h2>
-        </div>
+          {/* Traffic Trend Chart */}
+          <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-[2.5rem] backdrop-blur-md">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-xl font-bold uppercase italic flex items-center gap-3">
+                <Globe className="text-indigo-500" size={20} />
+                Traffic Flow (Hashed IP Basis)
+              </h2>
+            </div>
 
-        <div className="h-[400px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            {/* Note: This uses a mock array if your API doesn't provide time-series yet */}
-            <AreaChart data={stats.time_series || []}>
-              <defs>
-                <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="#1e293b"
-                vertical={false}
-              />
-              <XAxis
-                dataKey="date"
-                stroke="#64748b"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                stroke="#64748b"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#0f172a",
-                  border: "1px solid #334155",
-                  borderRadius: "12px",
-                }}
-                itemStyle={{ color: "#fff" }}
-              />
-              <Area
-                type="monotone"
-                dataKey="views"
-                stroke="#6366f1"
-                strokeWidth={3}
-                fillOpacity={1}
-                fill="url(#colorViews)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+            <div className="h-[400px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                {/* Note: This uses a mock array if your API doesn't provide time-series yet */}
+                <AreaChart data={stats.time_series || []}>
+                  <defs>
+                    <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#1e293b"
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="date"
+                    stroke="#64748b"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    stroke="#64748b"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "#0f172a",
+                      border: "1px solid #334155",
+                      borderRadius: "12px",
+                    }}
+                    itemStyle={{ color: "#fff" }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="views"
+                    stroke="#6366f1"
+                    strokeWidth={3}
+                    fillOpacity={1}
+                    fill="url(#colorViews)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

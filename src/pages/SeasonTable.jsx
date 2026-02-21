@@ -2,41 +2,69 @@ import { useState, useEffect } from "react"
 import { CalendarDays } from "lucide-react"
 import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
+import ErrorScreen from "../components/ErrorScreen"
 
 const SeasonTable = () => {
   const [seasons, setSeasons] = useState([])
   const [selectedSeason, setSelectedSeason] = useState("")
   const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  const fetchSeasons = async () => {
+    setLoading(true)
+    setError(null)
+    setSeasons([])
+    setSelectedSeason("")
+
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/api/seasons-list`)
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`)
+      }
+      const data = await response.json()
+      if (data.length > 0) {
+        setSeasons(data)
+        setSelectedSeason(data[0])
+      }
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchTable = async (formattedSeason) => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/seasons/${formattedSeason}`,
+      )
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`)
+      }
+      const data = await response.json()
+      setTableData(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/seasons-list")
-      .then((res) => res.json())
-      .then((data) => {
-        setSeasons(data)
-        if (data.length > 0) {
-          setSelectedSeason(data[0])
-        }
-      })
-      .catch((err) => console.error("Error fetching seasons:", err))
+    fetchSeasons()
   }, [])
 
   useEffect(() => {
     if (!selectedSeason) return
     const formattedSeason = selectedSeason.replace("/", "-")
-
-    setLoading(true)
-    fetch(`http://127.0.0.1:5000/api/seasons/${formattedSeason}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTableData(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.error("Error fetching table:", err)
-        setLoading(false)
-      })
+    fetchTable(formattedSeason)
   }, [selectedSeason])
+
+  if (error) return <ErrorScreen message={error} retryAction={fetchTable} />
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">

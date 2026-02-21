@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
+import ErrorScreen from "../components/ErrorScreen"
 
 const CustomeDateTable = () => {
   const getInitialDates = () => {
@@ -13,31 +14,38 @@ const CustomeDateTable = () => {
   }
 
   const [dates, setDates] = useState(getInitialDates)
-  const [data, setData] = useState([])
+  const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     setLoading(true)
-    fetch(
-      `http://127.0.0.1:5000/api/dates?start=${dates.start}&end=${dates.end}`,
-    )
-      .then((res) => res.json())
-      .then((resData) => {
-        setData(resData)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err)
-        setLoading(false)
-      })
+    setError(null)
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/dates?start=${dates.start}&end=${dates.end}`,
+      )
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`)
+      }
+      const data = await response.json()
+      setTableData(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
     handleSearch()
   }, [])
 
+  if (error) return <ErrorScreen message={error} retryAction={handleSearch} />
+
   return (
     <div className="space-y-6 text-white">
+      <title>PL Tables | Custom Dates</title>
       <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-wrap gap-4 items-end">
         <div>
           <label className="block text-xs font-bold text-slate-500 mb-2">
@@ -73,7 +81,10 @@ const CustomeDateTable = () => {
       {loading ? (
         <Loader />
       ) : (
-        <DataTable data={data} title={`From ${dates.start} to ${dates.end}`} />
+        <DataTable
+          data={tableData}
+          title={`From ${dates.start} to ${dates.end}`}
+        />
       )}
     </div>
   )

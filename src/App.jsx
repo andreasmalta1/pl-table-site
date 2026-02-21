@@ -8,7 +8,7 @@ import CustomDateTable from "./pages/CustomDateTable"
 import SeasonTable from "./pages/SeasonTable"
 import CalendarTable from "./pages/CalendarTable"
 import ManagerList from "./pages/ManagerList"
-import PLDashboard from "./pages/PLDashboard"
+import YouTubeStats from "./pages/YouTubeStats"
 import SiteAnalytics from "./pages/SiteAnalytics"
 import Contact from "./pages/Contact"
 
@@ -49,7 +49,7 @@ function App() {
               path="/past-managers"
               element={<ManagerList type="past" />}
             />
-            <Route path="/youtube" element={<PLDashboard />} />
+            <Route path="/youtube" element={<YouTubeStats />} />
             <Route path="/stats" element={<SiteAnalytics />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>

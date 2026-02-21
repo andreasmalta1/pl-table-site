@@ -3,34 +3,70 @@ import { Trophy, Clock, ChevronRight } from "lucide-react"
 import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
 import InfoBit from "../components/InfoBit"
+import ErrorScreen from "../components/ErrorScreen"
 
 const ManagerList = ({ type }) => {
   const [managers, setManagers] = useState([])
   const [tableData, setTableData] = useState(null)
   const [selectedManager, setSelectedManager] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const managerInfoRef = useRef(null)
 
-  useEffect(() => {
+  const fetchManagers = async () => {
     setTableData(null)
     setSelectedManager(null)
+    setLoading(true)
+    setError(null)
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/manager-list/${type}`,
+      )
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`)
+      }
+      const data = await response.json()
+      const processedData = data
+        .map((m) => {
+          const start = new Date(m.date_start)
+          const end = m.date_end ? new Date(m.date_end) : new Date()
+          const days = Math.floor((end - start) / (1000 * 60 * 60 * 24))
+          return { ...m, daysInCharge: days }
+        })
+        .sort((a, b) => b.daysInCharge - a.daysInCharge)
 
-    fetch(`http://127.0.0.1:5000/api/manager-list/${type}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const processed = data
-          .map((m) => {
-            const start = new Date(m.date_start)
-            const end = m.date_end ? new Date(m.date_end) : new Date()
-            const days = Math.floor((end - start) / (1000 * 60 * 60 * 24))
-            return { ...m, daysInCharge: days }
-          })
-          .sort((a, b) => b.daysInCharge - a.daysInCharge)
+      setManagers(processedData)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
-        setManagers(processed)
-      })
-      .catch((err) => console.error("Error:", err))
+  const fetchTable = async (manager) => {
+    setLoading(true)
+    setError(null)
+    setSelectedManager(manager)
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/stints/${manager.id}`,
+      )
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`)
+      }
+      const data = await response.json()
+      setTableData(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchManagers()
   }, [type])
 
   useEffect(() => {
@@ -42,19 +78,11 @@ const ManagerList = ({ type }) => {
     }
   }, [tableData])
 
-  const loadManagerTable = (manager) => {
-    setLoading(true)
-    setSelectedManager(manager)
-    fetch(`http://127.0.0.1:5000/api/stints/${manager.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTableData(data)
-        setLoading(false)
-      })
-  }
+  if (error) return <ErrorScreen message={error} retryAction={fetchTable} />
 
   return (
     <div className="space-y-12">
+      <title>PL Tables | Managers</title>
       <header>
         <h1 className="text-4xl font-black italic uppercase tracking-tighter text-white">
           {type === "current" ? "Current" : "Past"}{" "}
@@ -67,7 +95,7 @@ const ManagerList = ({ type }) => {
         {managers.map((m) => (
           <button
             key={m.id}
-            onClick={() => loadManagerTable(m)}
+            onClick={() => fetchTable(m)}
             className={`group flex items-center gap-4 p-4 rounded-3xl transition-all border ${
               selectedManager?.id === m.id
                 ? "bg-indigo-600 border-indigo-400"

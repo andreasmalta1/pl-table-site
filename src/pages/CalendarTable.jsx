@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { CalendarDays } from "lucide-react"
 import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
+import ErrorScreen from "../components/ErrorScreen"
 
 const START_YEAR = 1992
 
@@ -14,25 +15,38 @@ const CalendarTable = () => {
   const [selectedYear, setSelectedYear] = useState(currentYear)
   const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  const fetchTable = async () => {
+    setLoading(true)
+    setError(null)
+    if (!selectedYear) setError("Please make sure to select a year")
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/years/${selectedYear}`,
+      )
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`)
+      }
+      const data = await response.json()
+      setTableData(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    if (!selectedYear) return
-
-    setLoading(true)
-    fetch(`http://127.0.0.1:5000/api/years/${selectedYear}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTableData(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.error("Error fetching table:", err)
-        setLoading(false)
-      })
+    fetchTable()
   }, [selectedYear])
+
+  if (error) return <ErrorScreen message={error} retryAction={fetchTable} />
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
+      <title>PL Tables | Calendar Year</title>
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black italic uppercase tracking-tighter">
@@ -43,7 +57,6 @@ const CalendarTable = () => {
           </p>
         </div>
 
-        {/* The Dropdown UI */}
         <div className="relative group">
           <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400 w-4 h-4" />
           <select
