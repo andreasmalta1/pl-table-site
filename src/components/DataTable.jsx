@@ -128,7 +128,7 @@ const DataTable = ({ data, title }) => {
                   <td className="px-4 py-4">
                     <img
                       src={team.url}
-                      className="w-6 h-6 object-contain grayscale group-hover:grayscale-0 transition-all"
+                      className="w-6 h-6 object-contain group-hover:grayscale-0 transition-all"
                       alt=""
                     />
                   </td>
