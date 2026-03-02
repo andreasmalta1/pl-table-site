@@ -3,12 +3,14 @@ import { CalendarDays } from "lucide-react"
 import DataTable from "../components/DataTable"
 import Loader from "../components/Loader"
 import ErrorScreen from "../components/ErrorScreen"
+import DeductionBanner from "../components/DeductionBanner"
 import { apiRequest } from "../utils/api"
 
 const SeasonTable = () => {
   const [seasons, setSeasons] = useState([])
   const [selectedSeason, setSelectedSeason] = useState("")
   const [tableData, setTableData] = useState([])
+  const [deductions, setDeductions] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -36,8 +38,15 @@ const SeasonTable = () => {
     setError(null)
 
     try {
-      const data = await apiRequest(`/seasons/${formattedSeason}`)
-      setTableData(data)
+      // const data = await apiRequest(`/seasons/${formattedSeason}`)
+      // setTableData(data)
+      const [tableRes, deductionsRes] = await Promise.all([
+        apiRequest(`/seasons/${formattedSeason}`),
+        apiRequest(`/deductions/${formattedSeason}`),
+      ])
+
+      setTableData(tableRes)
+      setDeductions(deductionsRes)
     } catch (err) {
       setError(err.message)
     } finally {
@@ -90,10 +99,13 @@ const SeasonTable = () => {
       {loading ? (
         <Loader />
       ) : (
-        <DataTable
-          data={tableData}
-          title={`Standings: Season ${selectedSeason}`}
-        />
+        <>
+          <DataTable
+            data={tableData}
+            title={`Standings: Season ${selectedSeason}`}
+          />
+          <DeductionBanner deductions={deductions} />
+        </>
       )}
     </div>
   )
