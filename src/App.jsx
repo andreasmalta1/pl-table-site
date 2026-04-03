@@ -1,10 +1,5 @@
 import { useEffect } from "react"
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom"
+import { Routes, Route, useLocation } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Home from "./pages/Home"
 import About from "./pages/About"
@@ -16,7 +11,10 @@ import ManagerList from "./pages/ManagerList"
 import YouTubeStats from "./pages/YouTubeStats"
 import SiteAnalytics from "./pages/SiteAnalytics"
 import Contact from "./pages/Contact"
-import { apiRequest } from "./utils/api"
+import Login from "./pages/Login"
+import ProtectedRoute from "./components/ProtectedRoute"
+import AdminDashboard from "./pages/admin/AdminDashboard"
+import { apiPostRequest } from "./utils/api"
 
 const VisitorTracker = () => {
   const location = useLocation()
@@ -24,29 +22,38 @@ const VisitorTracker = () => {
   useEffect(() => {
     const trackVisit = async () => {
       try {
-        await apiRequest("/track-visit", {
+        await apiPostRequest("/track-visit", {
           method: "POST",
           body: JSON.stringify({ path: location.pathname }),
         })
-      } catch (err) {
+      } catch {
         console.warn("Analytics ping failed.")
       }
     }
 
     trackVisit()
-  }, [location.pathname]) // Only refires when the path changes
+  }, [location.pathname])
 
   return null
 }
 
 function App() {
   return (
-    <Router>
+    <>
       <VisitorTracker />
       <div className="min-h-screen bg-[#020617] text-slate-200">
         <Navbar />
         <main className="max-w-7xl mx-auto px-4 py-10">
           <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/all-time" element={<AllTimeTable />} />
@@ -64,7 +71,7 @@ function App() {
           </Routes>
         </main>
       </div>
-    </Router>
+    </>
   )
 }
 
