@@ -7,11 +7,11 @@ import {
   Image as ImageIcon,
 } from "lucide-react"
 
-const AddTeam = () => {
+const AddNation = () => {
   const [formData, setFormData] = useState({
-    teamName: "",
+    nationName: "",
     shortcode: "",
-    crestUrl: "",
+    flagUrl: "",
   })
   const [status, setStatus] = useState({ type: "", msg: "" })
   const [loading, setLoading] = useState(false)
@@ -22,12 +22,12 @@ const AddTeam = () => {
     setStatus({ type: "", msg: "" })
 
     try {
-      await adminPostRequest("/new-team", formData)
+      await adminPostRequest("/new-nation", formData)
       setStatus({
         type: "success",
-        msg: `Team ${formData.teamName} added!`,
+        msg: `Nation ${formData.nationName} added!`,
       })
-      setFormData({ teamName: "", shortcode: "", crestUrl: "" })
+      setFormData({ nationName: "", shortcode: "", flagUrl: "" })
     } catch (err) {
       setStatus({ type: "error", msg: err.message })
     } finally {
@@ -42,7 +42,8 @@ const AddTeam = () => {
           <ShieldPlus size={32} />
         </div>
         <h1 className="text-3xl font-black italic uppercase tracking-tighter text-white">
-          Register New <span className="text-indigo-500 font-normal">Club</span>
+          Register New
+          <span className="text-indigo-500 font-normal">Nation</span>
         </h1>
       </div>
 
@@ -54,15 +55,15 @@ const AddTeam = () => {
         >
           <div>
             <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">
-              Full Club Name
+              Nation Name
             </label>
             <input
               required
               className="w-full bg-slate-800 border-none rounded-2xl p-4 mt-1 text-white focus:ring-2 ring-indigo-500 outline-none transition-all"
-              placeholder="e.g. Manchester United"
-              value={formData.teamName}
+              placeholder="e.g. England"
+              value={formData.nationName}
               onChange={(e) =>
-                setFormData({ ...formData, teamName: e.target.value })
+                setFormData({ ...formData, nationName: e.target.value })
               }
             />
           </div>
@@ -76,7 +77,7 @@ const AddTeam = () => {
                 required
                 maxLength={3}
                 className="w-full bg-slate-800 border-none rounded-2xl p-4 mt-1 text-white uppercase focus:ring-2 ring-indigo-500 outline-none transition-all"
-                placeholder="MUN"
+                placeholder="ENG"
                 value={formData.shortcode}
                 onChange={(e) =>
                   setFormData({
@@ -90,7 +91,7 @@ const AddTeam = () => {
 
           <div>
             <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">
-              Crest S3 URL
+              Flag S3 URL
             </label>
             <input
               required
@@ -98,7 +99,7 @@ const AddTeam = () => {
               placeholder="https://pl-table.s3.../crest.png"
               value={formData.crestUrl}
               onChange={(e) =>
-                setFormData({ ...formData, crestUrl: e.target.value })
+                setFormData({ ...formData, flagUrl: e.target.value })
               }
             />
           </div>
@@ -136,9 +137,9 @@ const AddTeam = () => {
 
           <div className="relative group">
             <div className="w-48 h-48 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden transition-all group-hover:border-indigo-500">
-              {formData.crestUrl ? (
+              {formData.flagUrl ? (
                 <img
-                  src={formData.crestUrl}
+                  src={formData.flagUrl}
                   alt="Preview"
                   className="w-32 h-32 object-contain animate-in zoom-in duration-300"
                   onError={(e) => (e.target.style.display = "none")}
@@ -151,7 +152,7 @@ const AddTeam = () => {
 
           <div className="mt-8 text-center">
             <h3 className="text-2xl font-black uppercase italic text-white leading-tight">
-              {formData.teamName || "Team Name"}
+              {formData.nationName || "Nation"}
             </h3>
             <p className="text-indigo-500 font-mono font-bold tracking-[0.5em] mt-2">
               {formData.shortcode || "---"}
@@ -163,4 +164,4 @@ const AddTeam = () => {
   )
 }
 
-export default AddTeam
+export default AddNation

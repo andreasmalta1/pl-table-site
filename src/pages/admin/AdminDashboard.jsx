@@ -31,7 +31,7 @@ const AdminDashboard = () => {
     },
     {
       label: "Start Stint",
-      path: "start-stint",
+      path: "add-stint",
       icon: <History />,
       color: "bg-indigo-500",
     },

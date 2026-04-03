@@ -15,6 +15,10 @@ import Login from "./pages/Login"
 import AdminDashboard from "./pages/admin/AdminDashboard"
 import SiteAnalytics from "./pages/admin/SiteAnalytics"
 import AddTeam from "./pages/admin/AddTeam"
+import AddNation from "./pages/admin/AddNation"
+import AddManager from "./pages/admin/AddManager"
+import AddStint from "./pages/admin/AddStint"
+import EndStint from "./pages/admin/EndStint"
 import { apiPostRequest } from "./utils/api"
 
 const VisitorTracker = () => {
@@ -56,8 +60,10 @@ function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="add-team" element={<AddTeam />} />
-              {/*<Route path="add-nation" element={<AddNation />} />
-              <Route path="add-manager" element={<AddManager />} /> */}
+              <Route path="add-nation" element={<AddNation />} />
+              <Route path="add-manager" element={<AddManager />} />
+              <Route path="add-stint" element={<AddStint />} />
+              <Route path="end-stint" element={<EndStint />} />
               <Route path="stats" element={<SiteAnalytics />} />
             </Route>
             <Route path="/" element={<Home />} />
