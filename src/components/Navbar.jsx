@@ -1,48 +1,60 @@
 import { Link } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
-const Navbar = () => (
-  <nav className="border-b border-slate-800 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50">
-    <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap gap-6 items-center justify-between">
-      <Link to="/" className="text-xl font-black italic tracking-tighter">
-        PL<span className="text-indigo-500">STATS</span>
-      </Link>
-      <div className="flex gap-4 text-xs font-bold uppercase text-slate-400">
-        <Link to="/" className="hover:text-white">
-          Home
+const Navbar = () => {
+  const { user } = useAuth()
+
+  return (
+    <nav className="border-b border-slate-800 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap gap-6 items-center justify-between">
+        <Link to="/" className="text-xl font-black italic tracking-tighter">
+          PL<span className="text-indigo-500">STATS</span>
         </Link>
-        <Link to="/about" className="hover:text-white">
-          About
-        </Link>
-        <Link to="/all-time" className="hover:text-white">
-          All-Time
-        </Link>
-        <Link to="/custom-range" className="hover:text-white">
-          Custom Dates
-        </Link>
-        <Link to="/seasons" className="hover:text-white">
-          Seasons
-        </Link>
-        <Link to="/calendar" className="hover:text-white">
-          Calendar year
-        </Link>
-        <Link to="/managers" className="hover:text-white">
-          Managers
-        </Link>
-        <Link to="/past-managers" className="hover:text-white">
-          Past Managers
-        </Link>
-        <Link to="/youtube" className="hover:text-white text-indigo-400">
-          YouTube
-        </Link>
-        <Link to="/stats" className="hover:text-white text-indigo-400">
-          Stats
-        </Link>
-        <Link to="/contact" className="hover:text-white text-indigo-400">
-          Contact
-        </Link>
+        <div className="flex gap-4 text-xs font-bold uppercase text-slate-400">
+          <Link to="/" className="hover:text-white">
+            Home
+          </Link>
+          <Link to="/about" className="hover:text-white">
+            About
+          </Link>
+          <Link to="/all-time" className="hover:text-white">
+            All-Time
+          </Link>
+          <Link to="/custom-range" className="hover:text-white">
+            Custom Dates
+          </Link>
+          <Link to="/seasons" className="hover:text-white">
+            Seasons
+          </Link>
+          <Link to="/calendar" className="hover:text-white">
+            Calendar year
+          </Link>
+          <Link to="/managers" className="hover:text-white">
+            Managers
+          </Link>
+          <Link to="/past-managers" className="hover:text-white">
+            Past Managers
+          </Link>
+          <Link to="/youtube" className="hover:text-white text-indigo-400">
+            YouTube
+          </Link>
+          <Link to="/contact" className="hover:text-white text-indigo-400">
+            Contact
+          </Link>
+          {user && (
+            <>
+              <Link to="/stats" className="hover:text-white text-indigo-400">
+                Stats
+              </Link>
+              <Link to="/admin" className="hover:text-white text-indigo-400">
+                Admin
+              </Link>
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  </nav>
-)
+    </nav>
+  )
+}
 
 export default Navbar

@@ -1,6 +1,7 @@
 import { useEffect } from "react"
-import { Routes, Route, useLocation } from "react-router-dom"
+import { Routes, Route, useLocation, Outlet } from "react-router-dom"
 import Navbar from "./components/Navbar"
+import ProtectedRoute from "./components/ProtectedRoute"
 import Home from "./pages/Home"
 import About from "./pages/About"
 import AllTimeTable from "./pages/AllTimeTable"
@@ -12,7 +13,6 @@ import YouTubeStats from "./pages/YouTubeStats"
 import SiteAnalytics from "./pages/SiteAnalytics"
 import Contact from "./pages/Contact"
 import Login from "./pages/Login"
-import ProtectedRoute from "./components/ProtectedRoute"
 import AdminDashboard from "./pages/admin/AdminDashboard"
 import { apiPostRequest } from "./utils/api"
 
@@ -37,6 +37,12 @@ const VisitorTracker = () => {
   return null
 }
 
+const AdminLayout = () => (
+  <ProtectedRoute>
+    <Outlet />
+  </ProtectedRoute>
+)
+
 function App() {
   return (
     <>
@@ -46,14 +52,13 @@ function App() {
         <main className="max-w-7xl mx-auto px-4 py-10">
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              {/* <Route path="add-team" element={<AddTeam />} />
+              <Route path="add-nation" element={<AddNation />} />
+              <Route path="add-manager" element={<AddManager />} /> */}
+              <Route path="stats" element={<SiteAnalytics />} />
+            </Route>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/all-time" element={<AllTimeTable />} />
@@ -66,7 +71,6 @@ function App() {
               element={<ManagerList type="past" />}
             />
             <Route path="/youtube" element={<YouTubeStats />} />
-            <Route path="/stats" element={<SiteAnalytics />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
