@@ -10,10 +10,11 @@ import SeasonTable from "./pages/SeasonTable"
 import CalendarTable from "./pages/CalendarTable"
 import ManagerList from "./pages/ManagerList"
 import YouTubeStats from "./pages/YouTubeStats"
-import SiteAnalytics from "./pages/SiteAnalytics"
 import Contact from "./pages/Contact"
 import Login from "./pages/Login"
 import AdminDashboard from "./pages/admin/AdminDashboard"
+import SiteAnalytics from "./pages/admin/SiteAnalytics"
+import AddTeam from "./pages/admin/AddTeam"
 import { apiPostRequest } from "./utils/api"
 
 const VisitorTracker = () => {
@@ -54,8 +55,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
-              {/* <Route path="add-team" element={<AddTeam />} />
-              <Route path="add-nation" element={<AddNation />} />
+              <Route path="add-team" element={<AddTeam />} />
+              {/*<Route path="add-nation" element={<AddNation />} />
               <Route path="add-manager" element={<AddManager />} /> */}
               <Route path="stats" element={<SiteAnalytics />} />
             </Route>

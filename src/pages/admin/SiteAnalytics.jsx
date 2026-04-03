@@ -10,9 +10,9 @@ import {
 } from "recharts"
 import { Users, MousePointer2, Activity, Globe } from "lucide-react"
 import { motion } from "framer-motion"
-import Loader from "../components/Loader"
-import ErrorScreen from "../components/ErrorScreen"
-import { apiRequest } from "../utils/api"
+import Loader from "../../components/Loader"
+import ErrorScreen from "../../components/ErrorScreen"
+import { apiRequest } from "../../utils/api"
 
 const SiteAnalytics = () => {
   const [stats, setStats] = useState(null)

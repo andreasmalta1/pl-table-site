@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
-import { apiLoginRequest } from "../utils/api"
+import { loginRequest } from "../utils/api"
 import { Lock } from "lucide-react"
 
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
-      const data = await apiLoginRequest("/login", creds)
+      const data = await loginRequest("/login", creds)
       login(data)
       navigate("/admin")
     } catch (err) {
