@@ -19,6 +19,9 @@ import AddNation from "./pages/admin/AddNation"
 import AddManager from "./pages/admin/AddManager"
 import AddStint from "./pages/admin/AddStint"
 import EndStint from "./pages/admin/EndStint"
+import AddDeductions from "./pages/admin/AddDeductions"
+import NewSeason from "./pages/admin/NewSeason"
+import AddMatch from "./pages/admin/AddMatch"
 import { apiPostRequest } from "./utils/api"
 
 const VisitorTracker = () => {
@@ -64,6 +67,9 @@ function App() {
               <Route path="add-manager" element={<AddManager />} />
               <Route path="add-stint" element={<AddStint />} />
               <Route path="end-stint" element={<EndStint />} />
+              <Route path="add-deduction" element={<AddDeductions />} />
+              <Route path="new-season" element={<NewSeason />} />
+              <Route path="add-match" element={<AddMatch />} />
               <Route path="stats" element={<SiteAnalytics />} />
             </Route>
             <Route path="/" element={<Home />} />
