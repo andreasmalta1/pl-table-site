@@ -35,15 +35,18 @@ const Navbar = () => {
           <Link to="/past-managers" className="hover:text-white">
             Past Managers
           </Link>
-          <Link to="/youtube" className="hover:text-white text-indigo-400">
+          <Link to="/youtube" className="hover:text-white">
             YouTube
           </Link>
-          <Link to="/contact" className="hover:text-white text-indigo-400">
+          <Link to="/contact" className="hover:text-white">
             Contact
           </Link>
           {user && (
             <>
-              <Link to="/stats" className="hover:text-white text-indigo-400">
+              <Link
+                to="/admin/stats"
+                className="hover:text-white text-indigo-400"
+              >
                 Stats
               </Link>
               <Link to="/admin" className="hover:text-white text-indigo-400">
