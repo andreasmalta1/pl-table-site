@@ -2,7 +2,7 @@ import axios from "axios"
 
 const API_URL = "/api"
 const AUTH_URL = "/auth"
-const ADMIN_URL = "/admin"
+const ADMIN_URL = "/api/admin"
 
 export const apiRequest = async (endpoint, options = {}) => {
   const url = `${API_URL}${endpoint}`
