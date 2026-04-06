@@ -166,7 +166,6 @@ const AddDeduction = () => {
           )}
         </form>
 
-        {/* Visual Summary */}
         <div className="bg-slate-900/40 border border-dashed border-slate-800 rounded-[2.5rem] p-12 flex flex-col justify-center">
           <div className="text-center">
             <div className="text-6xl font-black text-rose-600 mb-2 italic">

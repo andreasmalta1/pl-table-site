@@ -79,7 +79,6 @@ const ManagerList = ({ type }) => {
         </h1>
       </header>
 
-      {/* Manager Selection List */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {managers.map((m) => (
           <button
@@ -136,7 +135,6 @@ const ManagerList = ({ type }) => {
         ))}
       </div>
 
-      {/* Profile Info Card */}
       {selectedManager && (
         <div
           ref={managerInfoRef}
@@ -175,7 +173,6 @@ const ManagerList = ({ type }) => {
                     selectedManager.date_start,
                   ).toLocaleDateString("en-GB")}
                 />
-                {/* Only show End Date if it exists (Past Manager) */}
                 {selectedManager.date_end ? (
                   <InfoBit
                     label="Departure"
@@ -197,7 +194,6 @@ const ManagerList = ({ type }) => {
               </div>
             </div>
           </div>
-          {/* Background design element */}
           <div className="absolute top-0 right-0 p-12 opacity-5">
             <Trophy size={200} />
           </div>

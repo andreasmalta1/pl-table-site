@@ -70,7 +70,6 @@ const AddStint = () => {
           onSubmit={handleSubmit}
           className="bg-slate-900 p-8 rounded-[2.5rem] border border-slate-800 space-y-6 text-white"
         >
-          {/* Manager Selection */}
           <div>
             <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">
               Select Manager
@@ -92,7 +91,6 @@ const AddStint = () => {
             </select>
           </div>
 
-          {/* Team Selection */}
           <div>
             <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">
               Assign to Club
@@ -114,7 +112,6 @@ const AddStint = () => {
             </select>
           </div>
 
-          {/* Date Selection */}
           <div>
             <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">
               Official Start Date
@@ -158,7 +155,6 @@ const AddStint = () => {
           )}
         </form>
 
-        {/* The "Contract" Preview */}
         <div className="bg-slate-900/40 border border-dashed border-slate-800 rounded-[2.5rem] p-12 flex flex-col justify-center items-center text-center">
           <div className="flex items-center gap-6 mb-8">
             <div className="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-700">

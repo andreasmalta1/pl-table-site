@@ -82,7 +82,6 @@ const SiteAnalytics = () => {
             />
           </div>
 
-          {/* Traffic Trend Chart */}
           <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-[2.5rem] backdrop-blur-md">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-xl font-bold uppercase italic flex items-center gap-3">
@@ -93,7 +92,6 @@ const SiteAnalytics = () => {
 
             <div className="h-[400px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                {/* Note: This uses a mock array if your API doesn't provide time-series yet */}
                 <AreaChart data={stats.time_series || []}>
                   <defs>
                     <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">

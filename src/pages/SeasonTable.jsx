@@ -79,7 +79,6 @@ const SeasonTable = () => {
           </p>
         </div>
 
-        {/* The Dropdown UI */}
         <div className="relative group">
           <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-400 w-4 h-4" />
           <select

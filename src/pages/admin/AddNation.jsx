@@ -48,7 +48,6 @@ const AddNation = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Form Section */}
         <form
           onSubmit={handleSubmit}
           className="bg-slate-900 p-8 rounded-[2.5rem] border border-slate-800 space-y-6"
@@ -129,7 +128,6 @@ const AddNation = () => {
           )}
         </form>
 
-        {/* Visual Preview Section */}
         <div className="bg-slate-900/40 border border-dashed border-slate-800 rounded-[2.5rem] flex flex-col items-center justify-center p-12">
           <p className="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-8">
             Digital Identity Preview

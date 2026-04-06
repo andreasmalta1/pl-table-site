@@ -142,7 +142,6 @@ const AddManager = () => {
           )}
         </form>
 
-        {/* Visual Preview */}
         <div className="bg-slate-900/40 border border-dashed border-slate-800 rounded-[2.5rem] flex flex-col items-center justify-center p-12">
           <div className="relative group">
             <div className="w-56 h-56 rounded-[3rem] bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden transition-all group-hover:border-purple-500">

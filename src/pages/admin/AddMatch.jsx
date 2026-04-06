@@ -64,12 +64,10 @@ const AddMatch = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Scoreboard UI */}
         <div className="bg-slate-900 border border-slate-800 rounded-[3rem] p-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 to-transparent pointer-events-none" />
 
           <div className="grid grid-cols-3 gap-8 items-start relative z-10">
-            {/* Home Team */}
             <div className="flex flex-col items-center gap-4">
               <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
                 Home Side
@@ -102,7 +100,6 @@ const AddMatch = () => {
               />
             </div>
 
-            {/* VS Divider — vertically centred between selector + score */}
             <div className="flex flex-col items-center justify-center pt-10 gap-3">
               <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/20">
                 <span className="font-black italic text-black text-sm">VS</span>
@@ -110,7 +107,6 @@ const AddMatch = () => {
               <div className="h-16 w-px bg-gradient-to-b from-amber-500/50 to-transparent" />
             </div>
 
-            {/* Away Team */}
             <div className="flex flex-col items-center gap-4">
               <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
                 Away Side
@@ -145,11 +141,9 @@ const AddMatch = () => {
           </div>
         </div>
 
-        {/* Date & Submit */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-slate-900/50 p-6 rounded-[2rem] border border-slate-800">
           <div className="flex items-center gap-4 ml-4">
             <Calendar className="text-slate-500" size={20} />
-            {/* FIX: use inline style instead of invalid Tailwind class */}
             <input
               type="date"
               style={{ colorScheme: "dark" }}

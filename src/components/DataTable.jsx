@@ -87,7 +87,6 @@ const DataTable = ({ data, title }) => {
         ref={tableContainerRef}
         className="bg-slate-900/50 border border-slate-800 rounded-[2rem] overflow-hidden backdrop-blur-md"
       >
-        {/* Branding Watermark (Hidden on web, visible on PNG) */}
         <div className="hidden block-on-export p-6 pb-0">
           <span className="text-indigo-500 font-black italic uppercase tracking-tighter">
             Big 6 Analytics

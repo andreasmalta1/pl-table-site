@@ -99,7 +99,6 @@ const YouTubeStats = () => {
           <Loader />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Main Visualizer */}
             <div className="lg:col-span-8 space-y-8">
               <motion.div
                 layout
@@ -165,7 +164,6 @@ const YouTubeStats = () => {
                 </div>
               </motion.div>
 
-              {/* Sub-Infographic: Content Volume vs Reach */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <StatCard
                   label="Total Uploads"
@@ -184,7 +182,6 @@ const YouTubeStats = () => {
               </div>
             </div>
 
-            {/* Leaderboard Sidebar */}
             <aside className="lg:col-span-4 space-y-6">
               <div className="bg-gradient-to-br from-indigo-600 to-violet-800 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden">
                 <div className="relative z-10">
